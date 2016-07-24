@@ -17,9 +17,9 @@ import (
 	"reflect"
 	"strings"
 
-	"golang.org/x/tools/go/types"
+	"go/types"
 
-	_ "golang.org/x/tools/go/gcimporter"
+	"go/importer"
 
 	"github.com/bluele/gen-validator/libs"
 )
@@ -406,7 +406,7 @@ func parseTagString(str string) ([]*tag, error) {
 // check type-checks the package. The package must be OK to proceed.
 func (pkg *Package) check(fs *token.FileSet, astFiles []*ast.File) {
 	pkg.defs = make(map[*ast.Ident]types.Object)
-	config := types.Config{FakeImportC: true, IgnoreFuncBodies: true}
+	config := types.Config{Importer: importer.Default(), FakeImportC: true, IgnoreFuncBodies: true}
 	info := &types.Info{
 		Defs: pkg.defs,
 	}
